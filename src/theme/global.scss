@@ -1,0 +1,16 @@
+@import "./vars.scss";
+
+:global {
+  html,
+  body {
+    font-size: $font-size;
+    height: 100%;
+    color: #555555;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: $line-height-base;
+  }
+
+  body {
+    margin: 0;
+  }
+}

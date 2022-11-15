@@ -1,0 +1,24 @@
+include:
+  - project: 'shared/ci-utils'
+    file: '.yarn.yml'
+
+stages:
+  - install
+  - test
+  
+image: node:16.17.0-bullseye-slim
+
+
+install:
+  stage: install
+  cache: !reference [.readWriteYarnCache]
+  script:
+    - yarn install --immutable --mode=skip-build
+
+test:
+  stage: test
+  cache: !reference [.readOnlyYarnCache]
+  script:
+    - yarn install
+    - yarn run util:validateTs
+    - yarn run util:lint
