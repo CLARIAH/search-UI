@@ -22,6 +22,11 @@ const NavBar: React.FC<Props> = ({}) => {
             Topics
           </Typography>
         </MenuItem>
+        <MenuItem component={Link} to="/results">
+          <Typography align="center" variant="button">
+            Results
+          </Typography>
+        </MenuItem>
       </Toolbar>
     </AppBar>
   );

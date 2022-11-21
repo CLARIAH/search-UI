@@ -16,13 +16,9 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@material-ui/core";
-
 interface Props {}
 
-const LandingPage: React.FC<Props> = () => {
-  // For the Button
-  const [someObject, setSomeObject] = React.useState<{ key: number }>();
-  const [nav, setNavigation] = React.useState<string>();
+const Results: React.FC<Props> = () => {
   // For the info
   const [open, setOpen] = React.useState(false);
   const handleClickAway = () => {
@@ -31,46 +27,41 @@ const LandingPage: React.FC<Props> = () => {
   const handleClick = () => {
     setOpen((prev) => !prev);
   };
+  const numOfResults = 3;
+  const results = [
+    "http://xmlns.com/foaf/0.1/Person",
+    "http://xmlns.com/foaf/0.1/Baum",
+    "http://xmlns.com/foaf/0.1/Tablett",
+  ];
 
   return (
     <Container component="article">
-      <img src={require("./clariahLogo2.png")} width="500" height="333" />
+      {/* <img src={require("./clariahLogo2.png")} width="500" height="333"/> */}
       <h2>Vocabulary Recommender</h2>
-      <Button
+      {/* <Button
         onClick={() => {
           setSomeObject({ key: 1 });
         }}
         variant="contained"
       >
         Contained
-      </Button>
-      <OutlinedInput placeholder="Enter search term"></OutlinedInput>
-      <Button
-        onClick={() => {
-          setNavigation("Hi");
-        }}
-        variant="contained"
-      >
-        start search
-      </Button>
-      <div>{nav}</div>
+      </Button> */}
+      <OutlinedInput placeholder="Here comes my search term"></OutlinedInput>
       <FormGroup>
         <FormControlLabel control={<Checkbox defaultChecked />} label="Class (C)" />
-        {/* <ClickAwayListener onClickAway={handleClickAway}>
-          <Box sx={{ position: 'relative' }}>
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <Box sx={{ position: "relative" }}>
             <button type="button" onClick={handleClick}>
               Info
             </button>
-          {/* {open ? (
-            <Box sx={styles}>
-              “Class (C)”:
-              A class defines the type of a thing.
-              In a triple classes are found in the subject or in the object position.
-              (Subject, Predicate, Object)
-            </Box>
-          ) : null} */}
-        {/* </Box>
-        </ClickAwayListener> */}
+            {open ? (
+              <Box>
+                “Class (C)”: A class defines the type of a thing. In a triple classes are found in the subject or in the
+                object position. (Subject, Predicate, Object)
+              </Box>
+            ) : null}
+          </Box>
+        </ClickAwayListener>
         <FormControlLabel control={<Checkbox defaultChecked />} label="Property (P)" />
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ position: "relative" }}>
@@ -78,9 +69,9 @@ const LandingPage: React.FC<Props> = () => {
               Info
             </button>
             {open ? (
-              <Box sx={styles}>
-                “Property (P)”:~{"\n"}A property defines the relationship between two things. In a triple properties are
-                found in the predicate position. (Subject, Predicate, Object) “Class (C)”: A class defines the type of a
+              <Box>
+                “Property (P)”: A property defines the relationship between two things. In a triple properties are found
+                in the predicate position. (Subject, Predicate, Object) “Class (C)”: A class defines the type of a
                 thing. In a triple classes are found in the subject or in the object position. (Subject, Predicate,
                 Object)
               </Box>
@@ -88,11 +79,14 @@ const LandingPage: React.FC<Props> = () => {
           </Box>
         </ClickAwayListener>
       </FormGroup>
-      <div>Result: {JSON.stringify(someObject, null, 2)}</div>
-      <span>
-        Brought to you by <Svg className={styles.svg} src={triplyLogo} />
-      </span>
+      <hr></hr>
+      <div>{numOfResults} results</div>
+      <div>{results}</div>
+      {/* <div>Result: {JSON.stringify(someObject, null, 2)}</div> */}
+      {/* <span> */}
+      {/* Brought to you by <Svg className={styles.svg} src={triplyLogo} /> */}
+      {/* </span> */}
     </Container>
   );
 };
-export default LandingPage;
+export default Results;
