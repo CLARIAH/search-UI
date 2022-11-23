@@ -10,14 +10,7 @@ interface Props {}
 const App: React.FC<Props> = () => {
   return (
     <>
-      <NavBar />
-      <Routes>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/topics/*" element={<Topics />}></Route>
-        <Route index element={<LandingPage />}></Route>
-        <Route path="/results/*" element={<Results />}></Route>
-        {/* <LandingPage/> */}
-      </Routes>
+      <LandingPage />
     </>
   );
 };

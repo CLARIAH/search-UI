@@ -10,12 +10,13 @@ import {
   Checkbox,
   Button,
   Container,
-  TextField,
   Input,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
+  IconButton,
 } from "@material-ui/core";
+import clariahImg from "./clariahLogo2.png";
+import clariahIcon from "./clariahIcon.png";
+import FontAwesomeIcon from "components/FontAwesomeIcon";
+import { size } from "lodash-es";
 
 interface Props {}
 
@@ -33,29 +34,37 @@ const LandingPage: React.FC<Props> = () => {
   };
 
   return (
-    <Container component="article">
-      <img src={require("./clariahLogo2.png")} width="500" height="333" />
-      <h2>Vocabulary Recommender</h2>
-      <Button
+    <Container>
+      <img src={clariahImg} className={styles.logo}></img>
+      <div className={styles.div1}>
+        <div className={styles.div2}>
+          <h1>Vocabulary Recommender</h1>
+          <div className={styles.searchBar}>
+            <Input fullWidth={true} disableUnderline={true} placeholder="Enter search term"></Input>
+            <IconButton children={<img src={clariahIcon} className={styles.icon} />}></IconButton>
+          </div>
+          <div className={styles.classProp}>
+            <div>
+              <FormControlLabel control={<Checkbox defaultChecked />} label="Class (C)" />
+              <button className={styles.info}>info</button>
+            </div>
+            <div>
+              <FormControlLabel control={<Checkbox defaultChecked />} label="Property (P)" />
+              <button className={styles.info}>info</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <Button
         onClick={() => {
           setSomeObject({ key: 1 });
         }}
         variant="contained"
       >
         Contained
-      </Button>
-      <OutlinedInput placeholder="Enter search term"></OutlinedInput>
-      <Button
-        onClick={() => {
-          setNavigation("Hi");
-        }}
-        variant="contained"
-      >
-        start search
-      </Button>
+      </Button> */}
       <div>{nav}</div>
       <FormGroup>
-        <FormControlLabel control={<Checkbox defaultChecked />} label="Class (C)" />
         {/* <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ position: 'relative' }}>
             <button type="button" onClick={handleClick}>
@@ -71,7 +80,7 @@ const LandingPage: React.FC<Props> = () => {
           ) : null} */}
         {/* </Box>
         </ClickAwayListener> */}
-        <FormControlLabel control={<Checkbox defaultChecked />} label="Property (P)" />
+
         <ClickAwayListener onClickAway={handleClickAway}>
           <Box sx={{ position: "relative" }}>
             <button type="button" onClick={handleClick}>
@@ -89,9 +98,6 @@ const LandingPage: React.FC<Props> = () => {
         </ClickAwayListener>
       </FormGroup>
       <div>Result: {JSON.stringify(someObject, null, 2)}</div>
-      <span>
-        Brought to you by <Svg className={styles.svg} src={triplyLogo} />
-      </span>
     </Container>
   );
 };

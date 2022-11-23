@@ -1,6 +1,5 @@
 import React from "react";
 import Svg from "components/Svg";
-import triplyLogo from "./triply.svg";
 import styles from "./style.scss";
 import {
   ClickAwayListener,
@@ -8,14 +7,10 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Button,
   Container,
-  TextField,
-  Input,
-  FormControl,
-  InputLabel,
   OutlinedInput,
 } from "@material-ui/core";
+import clariahImg from "./clariahLogo2.png";
 interface Props {}
 
 const Results: React.FC<Props> = () => {
@@ -36,16 +31,8 @@ const Results: React.FC<Props> = () => {
 
   return (
     <Container component="article">
-      {/* <img src={require("./clariahLogo2.png")} width="500" height="333"/> */}
+      <img src={clariahImg} className={styles.logo}></img>
       <h2>Vocabulary Recommender</h2>
-      {/* <Button
-        onClick={() => {
-          setSomeObject({ key: 1 });
-        }}
-        variant="contained"
-      >
-        Contained
-      </Button> */}
       <OutlinedInput placeholder="Here comes my search term"></OutlinedInput>
       <FormGroup>
         <FormControlLabel control={<Checkbox defaultChecked />} label="Class (C)" />
@@ -82,10 +69,6 @@ const Results: React.FC<Props> = () => {
       <hr></hr>
       <div>{numOfResults} results</div>
       <div>{results}</div>
-      {/* <div>Result: {JSON.stringify(someObject, null, 2)}</div> */}
-      {/* <span> */}
-      {/* Brought to you by <Svg className={styles.svg} src={triplyLogo} /> */}
-      {/* </span> */}
     </Container>
   );
 };
