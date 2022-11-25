@@ -12,6 +12,7 @@ import {
   Container,
   Input,
   IconButton,
+  Icon,
 } from "@material-ui/core";
 import clariahImg from "./clariahLogo2.png";
 import clariahIcon from "./clariahIcon.png";
@@ -40,13 +41,16 @@ const LandingPage: React.FC<Props> = () => {
         <div className={styles.div2}>
           <h1>Vocabulary Recommender</h1>
           <div className={styles.searchBar}>
-            <Input fullWidth={true} disableUnderline={true} placeholder="Enter search term"></Input>
-            <IconButton children={<img src={clariahIcon} className={styles.icon} />}></IconButton>
+            <div className={styles.div3}>
+              <Input fullWidth={true} disableUnderline={true} placeholder="Enter search term"></Input>
+              <IconButton children={<img src={clariahIcon} className={styles.icon} />}></IconButton>
+            </div>
           </div>
           <div className={styles.classProp}>
             <div>
               <FormControlLabel control={<Checkbox defaultChecked />} label="Class (C)" />
               <button className={styles.info}>info</button>
+              <IconButton children={<FontAwesomeIcon icon={["fas", "info-circle"]}></FontAwesomeIcon>}></IconButton>
             </div>
             <div>
               <FormControlLabel control={<Checkbox defaultChecked />} label="Property (P)" />
