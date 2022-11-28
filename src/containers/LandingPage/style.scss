@@ -2,37 +2,16 @@
   margin-top: 10px;
 }
 
-.div1 {
+.searchInput {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  align-content: center;
   margin-top: 150px;
 }
 
-.div2 h2,
-.div2 .searchBar .classProp {
-  width: 100%;
-}
-
-.div2 {
-  color: #000d48;
+.searchTerm {
   flex-grow: 1 1 0px;
   width: auto;
-}
-
-.searchBar {
-  color: #000d48;
-  border: 2px solid;
-  border-color: #000d48;
-  border-radius: 7px;
-}
-
-.div3 {
-  display: flex;
-  flex-direction: row;
-  padding-left: 5px;
 }
 
 .icon {
@@ -40,12 +19,10 @@
   width: 30px;
 }
 
-.classProp {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 .info {
   margin-right: 5px;
+}
+
+.resultsContainer {
+  margin-top: 1rem;
 }

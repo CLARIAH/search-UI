@@ -1853,6 +1853,7 @@ __metadata:
     ts-loader: ^9.4.1
     typescript: ^4.8.4
     url-loader: ^4.1.1
+    vocabulary-recommender: ^1.0.5
     webpack: 5.75.0
     webpack-build-notifier: ^2.3.0
     webpack-bundle-analyzer: ^4.7.0
@@ -3586,6 +3587,17 @@ __metadata:
     strip-ansi: ^6.0.0
     wrap-ansi: ^7.0.0
   checksum: ce2e8f578a4813806788ac399b9e866297740eecd4ad1823c27fd344d78b22c5f8597d548adbcc46f0573e43e21e751f39446c5a5e804a12aace402b7a315d7f
+  languageName: node
+  linkType: hard
+
+"cliui@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "cliui@npm:8.0.1"
+  dependencies:
+    string-width: ^4.2.0
+    strip-ansi: ^6.0.1
+    wrap-ansi: ^7.0.0
+  checksum: 79648b3b0045f2e285b76fb2e24e207c6db44323581e421c3acbd0e86454cba1b37aea976ab50195a49e7384b871e6dfb2247ad7dec53c02454ac6497394cb56
   languageName: node
   linkType: hard
 
@@ -6993,7 +7005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.0":
+"node-fetch@npm:2, node-fetch@npm:^2.6.0":
   version: 2.6.7
   resolution: "node-fetch@npm:2.6.7"
   dependencies:
@@ -9792,6 +9804,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vocabulary-recommender@npm:^1.0.4, vocabulary-recommender@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "vocabulary-recommender@npm:1.0.5"
+  dependencies:
+    lodash: ^4.17.21
+    node-fetch: 2
+    vocabulary-recommender: ^1.0.4
+    yargs: ^17.5.1
+  bin:
+    recommend: dist/recommend.js
+    vocabulary-recommend: dist/recommend.js
+  checksum: b4fcc9025b5c05f2df78de60c568bb046f43b2180f03ef9e106c1d6a2951a0d73d407fc7f435ae58a2d940302138004b70a404bad179c77430198687827264b5
+  languageName: node
+  linkType: hard
+
 "watchpack@npm:^2.4.0":
   version: 2.4.0
   resolution: "watchpack@npm:2.4.0"
@@ -10189,6 +10216,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yargs-parser@npm:^21.1.1":
+  version: 21.1.1
+  resolution: "yargs-parser@npm:21.1.1"
+  checksum: ed2d96a616a9e3e1cc7d204c62ecc61f7aaab633dcbfab2c6df50f7f87b393993fe6640d017759fe112d0cb1e0119f2b4150a87305cc873fd90831c6a58ccf1c
+  languageName: node
+  linkType: hard
+
 "yargs-unparser@npm:2.0.0":
   version: 2.0.0
   resolution: "yargs-unparser@npm:2.0.0"
@@ -10228,5 +10262,20 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^21.0.0
   checksum: 00d58a2c052937fa044834313f07910fd0a115dec5ee35919e857eeee3736b21a4eafa8264535800ba8bac312991ce785ecb8a51f4d2cc8c4676d865af1cfbde
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^17.5.1":
+  version: 17.6.2
+  resolution: "yargs@npm:17.6.2"
+  dependencies:
+    cliui: ^8.0.1
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.3
+    y18n: ^5.0.5
+    yargs-parser: ^21.1.1
+  checksum: 47da1b0d854fa16d45a3ded57b716b013b2179022352a5f7467409da5a04a1eef5b3b3d97a2dfc13e8bbe5f2ffc0afe3bc6a4a72f8254e60f5a4bd7947138643
   languageName: node
   linkType: hard
