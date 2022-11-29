@@ -1853,7 +1853,7 @@ __metadata:
     ts-loader: ^9.4.1
     typescript: ^4.8.4
     url-loader: ^4.1.1
-    vocabulary-recommender: ^1.0.5
+    vocabulary-recommender: ^1.0.6
     webpack: 5.75.0
     webpack-build-notifier: ^2.3.0
     webpack-bundle-analyzer: ^4.7.0
@@ -3612,6 +3612,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clone-regexp@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "clone-regexp@npm:3.0.0"
+  dependencies:
+    is-regexp: ^3.0.0
+  checksum: cb254bd47ce0aac55771c888211e796b5e2a2ed974d0a7020e4e3805eca597fd19b85a7bcbf2250d319f12626a09c0e4db120e02ce49fec81a61bcd208474651
+  languageName: node
+  linkType: hard
+
 "clsx@npm:^1.0.4":
   version: 1.1.1
   resolution: "clsx@npm:1.1.1"
@@ -3883,6 +3892,15 @@ __metadata:
     path-type: ^4.0.0
     yaml: ^1.10.0
   checksum: 6801feaa0249e9b9fdde5b3d70dc33b4f9c69095bec94d67e3fe08b66eac24dc7e2099f053597cfbc94b743de269aa5d2cfa7da3fde765433423b06bd122941a
+  languageName: node
+  linkType: hard
+
+"cross-fetch@npm:^3.1.5":
+  version: 3.1.5
+  resolution: "cross-fetch@npm:3.1.5"
+  dependencies:
+    node-fetch: 2.6.7
+  checksum: f6b8c6ee3ef993ace6277fd789c71b6acf1b504fd5f5c7128df4ef2f125a429e29cd62dc8c127523f04a5f2fa4771ed80e3f3d9695617f441425045f505cf3bb
   languageName: node
   linkType: hard
 
@@ -4793,6 +4811,15 @@ __metadata:
     signal-exit: ^3.0.7
     strip-final-newline: ^3.0.0
   checksum: 1a4af799839134f5c72eb63d525b87304c1114a63aa71676c91d57ccef2e26f2f53e14c11384ab11c4ec479be1efa83d11c8190e00040355c2c5c3364327fa8e
+  languageName: node
+  linkType: hard
+
+"execall@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "execall@npm:3.0.0"
+  dependencies:
+    clone-regexp: ^3.0.0
+  checksum: ba6c6458dce35a82af9025846937612353645e2be903b02d8dd05bdbe27fe1782f25f4a6e399aee37e3f88088ab83b0a1af28b2501cb134dbfe69781b0645b08
   languageName: node
   linkType: hard
 
@@ -5929,6 +5956,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-regexp@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "is-regexp@npm:3.1.0"
+  checksum: d39dbd9892f0a25d01ee1a8e650c3f2e045bf7b1fa87eafb50b31dd29342869aa9135fd372628202254398956bf7f4b62094bdda39283ec2a9bb749fbb7f427c
+  languageName: node
+  linkType: hard
+
 "is-stream@npm:^2.0.0":
   version: 2.0.0
   resolution: "is-stream@npm:2.0.0"
@@ -7005,7 +7039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2, node-fetch@npm:^2.6.0":
+"node-fetch@npm:2, node-fetch@npm:2.6.7, node-fetch@npm:^2.6.0":
   version: 2.6.7
   resolution: "node-fetch@npm:2.6.7"
   dependencies:
@@ -9804,18 +9838,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vocabulary-recommender@npm:^1.0.4, vocabulary-recommender@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "vocabulary-recommender@npm:1.0.5"
+"vocabulary-recommender@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "vocabulary-recommender@npm:1.0.6"
   dependencies:
+    cross-fetch: ^3.1.5
+    execall: ^3.0.0
     lodash: ^4.17.21
     node-fetch: 2
-    vocabulary-recommender: ^1.0.4
+    vocabulary-recommender: ^1.0.6
     yargs: ^17.5.1
   bin:
-    recommend: dist/recommend.js
-    vocabulary-recommend: dist/recommend.js
-  checksum: b4fcc9025b5c05f2df78de60c568bb046f43b2180f03ef9e106c1d6a2951a0d73d407fc7f435ae58a2d940302138004b70a404bad179c77430198687827264b5
+    recommend: dist/cli.js
+    vocabulary-recommend: dist/cli.js
+  checksum: 0b72e948a7e59ca21f56b46fc36561e94a93252803cd95d7b67edb8527bee7ec891add516ad85b659c00deac10827e16451579e0377cc6026ede764d35b79acb
   languageName: node
   linkType: hard
 
