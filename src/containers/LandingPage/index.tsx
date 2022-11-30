@@ -38,6 +38,7 @@ const LandingPage: React.FC<Props> = () => {
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const [results, setResult] = React.useState<Recommended>();
   const [searchError, setSearchError] = React.useState<string>();
+
   const search = (event: React.FormEvent<HTMLFormElement>) => {
     setSearchError(undefined);
     event.preventDefault();
@@ -60,7 +61,7 @@ const LandingPage: React.FC<Props> = () => {
             select ?iri (sample(?label) as ?label) (sample(?description) as ?description) (sum(?_score) as ?score) {
               {
                 { ?iri a owl:Class. } union { ?iri a rdfs:Class. }
-                filter(regex(str(?iri),'\${term}','i'))
+                filter(regex(str(?iri),'${searchTerm}','i'))
                 bind(1 as ?_score)
               } union {
                 { ?iri a owl:Class. } union { ?iri a rdfs:Class. }
@@ -72,7 +73,7 @@ const LandingPage: React.FC<Props> = () => {
                      skos:example|
                      skos:historyNote|
                      skos:scopeNote ?description.
-                filter(regex(str(?description),'\${term}','i'))
+                filter(regex(str(?description),'${searchTerm}','i'))
                 # Changed score from 1 to 0.8
                 bind(0.8 as ?_score)
               } union {
@@ -81,7 +82,7 @@ const LandingPage: React.FC<Props> = () => {
                      skos:altLabel|
                      skos:prefLabel|
                      skos:hiddenLabel ?label.
-                filter(regex(str(?label),'\${term}','i'))
+                filter(regex(str(?label),'${searchTerm}','i'))
                 bind(1 as ?_score)
               }
             }
@@ -99,7 +100,7 @@ const LandingPage: React.FC<Props> = () => {
             select ?iri (sample(?label) as ?label) (sample(?description) as ?description) (sum(?_score) as ?score) {
               {
                 { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. } 
-                filter(regex(str(?iri),'\${term}','i'))
+                filter(regex(str(?iri),'${searchTerm}','i'))
                 bind(1 as ?_score)
               } union {
                 { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. }  
@@ -111,7 +112,7 @@ const LandingPage: React.FC<Props> = () => {
                      skos:example|
                      skos:historyNote|
                      skos:scopeNote ?description.
-                filter(regex(str(?description),'\${term}','i'))
+                filter(regex(str(?description),'${searchTerm}','i'))
                 bind(0.8 as ?_score)
               } union {
                 { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. }  
@@ -119,7 +120,7 @@ const LandingPage: React.FC<Props> = () => {
                      skos:altLabel|
                      skos:prefLabel|
                      skos:hiddenLabel ?label.
-                filter(regex(str(?label),'\${term}','i'))
+                filter(regex(str(?label),'${searchTerm}','i'))
                 bind(1 as ?_score)
               }
             }
