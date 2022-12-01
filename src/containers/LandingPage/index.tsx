@@ -12,6 +12,8 @@ import {
   TableRow,
   TableCell,
   TableHead,
+  TablePagination,
+  TableFooter,
 } from "@material-ui/core";
 import clariahImg from "./clariahLogo2.png";
 import clariahIcon from "./clariahIcon.png";
@@ -27,6 +29,8 @@ const LandingPage: React.FC<Props> = () => {
   const [results, setResult] = React.useState<(Result & { category: string })[]>();
   const [searchError, setSearchError] = React.useState<string>();
   const [isHovering, setIsHovering] = React.useState<boolean>(false);
+  const [currentPage, setCurrentPage] = React.useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const showInfoText = () => {
     // setIsHoveringIri(true);
@@ -35,6 +39,16 @@ const LandingPage: React.FC<Props> = () => {
   const hideInfoText = () => {
     // setIsHoveringIri(false);
     setIsHovering(false);
+  };
+
+  const changePage = (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+    // Go to the next results page
+    setCurrentPage(page);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPage(0);
   };
 
   const queryClass: string = `# Contains a configured SPARQL query to search classes. 
@@ -76,7 +90,7 @@ const LandingPage: React.FC<Props> = () => {
       order by desc(?score)
     }
   }
-  limit 20`;
+  `;
   const queryProp: string = `prefix dct: <http://purl.org/dc/terms/>
   prefix owl: <http://www.w3.org/2002/07/owl#>
   prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -114,7 +128,7 @@ const LandingPage: React.FC<Props> = () => {
       order by desc(?score)
     }
   }
-  limit 20`;
+  `;
 
   let cat: string[] = [category];
   let terms: string[] = [searchTerm];
@@ -126,7 +140,6 @@ const LandingPage: React.FC<Props> = () => {
   const search = (event: React.FormEvent<HTMLFormElement>) => {
     setSearchError(undefined);
     event.preventDefault();
-    // Jana: Add multiple searchTerms & categories
     const input: Arguments = {
       searchTerms: terms,
       categories: cat,
@@ -208,78 +221,90 @@ const LandingPage: React.FC<Props> = () => {
         <div className={styles.resultsContainer}>
           <hr></hr>
           <span>{results.length} results</span>
-          <div className={styles.tableContainer}>
-            <Table aria-label="table of the results">
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    IRI
-                    {isHovering && (
-                      <>
-                        <br></br>
-                        <span>IRIs are used to uniquely describe information.</span>
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    Vocabulary
-                    {isHovering && (
-                      <>
-                        <br></br>
-                        <span>
-                          Vocabularies define information terms that can be used to describe information in a
-                          standardized format.
-                        </span>
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    Description
-                    {isHovering && (
-                      <>
-                        <br></br>
-                        <span>A description of the IRI.</span>
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    Score
-                    {isHovering && (
-                      <>
-                        <br></br>
-                        <span>The score defines how well the IRI matches the search term.</span>
-                      </>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    Category
-                    {isHovering && (
-                      <>
-                        <br></br>
-                        <span>
-                          Classes describe the type of an instance. They can be in the subject or object position of a
-                          triple. Properties describe the relationship between two instances. They are in the predicate
-                          position. (subject, predicate, object)
-                        </span>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {results.map((result, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
-                      <TableCell>{result.vocabulary}</TableCell>
-                      <TableCell>{result.description}</TableCell>
-                      <TableCell>{result.score}</TableCell>
-                      <TableCell>{result.category}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+          <div className={styles.tableInfoContainer}>
+            <div className={styles.tableContainer}>
+              <Table aria-label="table of the results">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      IRI
+                      {isHovering && (
+                        <>
+                          <br></br>
+                          <span>IRIs are used to uniquely describe information.</span>
+                        </>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      Vocabulary
+                      {isHovering && (
+                        <>
+                          <br></br>
+                          <span>
+                            Vocabularies define information terms that can be used to describe information in a
+                            standardized format.
+                          </span>
+                        </>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      Description
+                      {isHovering && (
+                        <>
+                          <br></br>
+                          <span>A description of the IRI.</span>
+                        </>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      Score
+                      {isHovering && (
+                        <>
+                          <br></br>
+                          <span>The score defines how well the IRI matches the search term.</span>
+                        </>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      Category
+                      {isHovering && (
+                        <>
+                          <br></br>
+                          <span>
+                            Classes describe the type of an instance. They can be in the subject or object position of a
+                            triple. Properties describe the relationship between two instances. They are in the
+                            predicate position. (subject, predicate, object)
+                          </span>
+                        </>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {results.map((result, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
+                        <TableCell>{result.vocabulary}</TableCell>
+                        <TableCell>{result.description}</TableCell>
+                        <TableCell>{result.score}</TableCell>
+                        <TableCell>{result.category}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+              <TableFooter>
+                <TablePagination
+                  count={results.length}
+                  onPageChange={changePage}
+                  page={currentPage}
+                  rowsPerPage={rowsPerPage}
+                  component="div"
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                ></TablePagination>
+              </TableFooter>
+            </div>
             <div className={styles.infoContainer} onMouseOver={showInfoText} onMouseOut={hideInfoText}>
               <FontAwesomeIcon icon={["fal", "circle-info"]} />
             </div>

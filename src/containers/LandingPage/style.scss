@@ -29,6 +29,11 @@
 
 .tableContainer {
   display: flex;
+  flex-direction: column;
+}
+
+.tableInfoContainer {
+  display: flex;
   flex-direction: row;
   margin-bottom: 2rem;
 }
