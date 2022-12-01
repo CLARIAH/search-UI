@@ -7,8 +7,10 @@ import { faThumbsUp } from "@fortawesome/pro-regular-svg-icons";
 
 import { faThumbsUp as faThumbsUpSolid } from "@fortawesome/pro-solid-svg-icons";
 
+import { faInfoCircle } from "@fortawesome/pro-light-svg-icons";
+
 export default function registerIcons() {
-  library.add(faThumbsUp, faThumbsUpSolid);
+  library.add(faThumbsUp, faThumbsUpSolid, faInfoCircle);
 }
 declare module "@fortawesome/fontawesome-svg-core" {
   export interface Props {
