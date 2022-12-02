@@ -243,7 +243,8 @@ const LandingPage: React.FC<Props> = () => {
                   <Tooltip
                     title={
                       <span className={styles.infoText}>
-                        The score defines how well the IRI matches the search term.
+                        The score defines how well the IRI matches the search term. The highest score is 1, the lowest
+                        is 0.
                       </span>
                     }
                   >
