@@ -14,10 +14,11 @@ import {
   TableHead,
   TablePagination,
   TableFooter,
+  Tooltip,
+  Paper,
 } from "@material-ui/core";
 import clariahImg from "./clariahLogo2.png";
 import clariahIcon from "./clariahIcon.png";
-import FontAwesomeIcon from "components/FontAwesomeIcon";
 import { recommend } from "vocabulary-recommender/dist/recommend";
 import { Arguments, Result } from "vocabulary-recommender/dist/interfaces";
 
@@ -28,18 +29,8 @@ const LandingPage: React.FC<Props> = () => {
   const [searchTerm, setSearchTerm] = React.useState<string>("");
   const [results, setResult] = React.useState<(Result & { category: string })[]>();
   const [searchError, setSearchError] = React.useState<string>();
-  const [isHovering, setIsHovering] = React.useState<boolean>(false);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const showInfoText = () => {
-    // setIsHoveringIri(true);
-    setIsHovering(true);
-  };
-  const hideInfoText = () => {
-    // setIsHoveringIri(false);
-    setIsHovering(false);
-  };
 
   const changePage = (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
     // Go to the next results page
@@ -160,8 +151,8 @@ const LandingPage: React.FC<Props> = () => {
               .map((resultObj) => resultObj.results.map((result) => ({ ...result, category: resultObj.category })))
               .flat()
           : [];
-
         setResult(resultList.sort((first, second) => (second.score || -1) - (first.score || -1)));
+        setCurrentPage(0);
       })
       .catch((error) => {
         setSearchError(error.message);
@@ -207,7 +198,7 @@ const LandingPage: React.FC<Props> = () => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton type="submit" aria-label="Search">
+                  <IconButton type="submit" aria-label="Search" title="Search">
                     <img src={clariahIcon} className={styles.icon} alt="" />
                   </IconButton>
                 </InputAdornment>
@@ -221,94 +212,85 @@ const LandingPage: React.FC<Props> = () => {
         <div className={styles.resultsContainer}>
           <hr></hr>
           <span>{results.length} results</span>
-          <div className={styles.tableInfoContainer}>
-            <div className={styles.tableContainer}>
-              <Table aria-label="table of the results">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      IRI
-                      {isHovering && (
-                        <>
-                          <br></br>
-                          <span>IRIs are used to uniquely describe information.</span>
-                        </>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      Vocabulary
-                      {isHovering && (
-                        <>
-                          <br></br>
-                          <span>
-                            Vocabularies define information terms that can be used to describe information in a
-                            standardized format.
-                          </span>
-                        </>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      Description
-                      {isHovering && (
-                        <>
-                          <br></br>
-                          <span>A description of the IRI.</span>
-                        </>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      Score
-                      {isHovering && (
-                        <>
-                          <br></br>
-                          <span>The score defines how well the IRI matches the search term.</span>
-                        </>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      Category
-                      {isHovering && (
-                        <>
-                          <br></br>
-                          <span>
-                            Classes describe the type of an instance. They can be in the subject or object position of a
-                            triple. Properties describe the relationship between two instances. They are in the
-                            predicate position. (subject, predicate, object)
-                          </span>
-                        </>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {results.map((result, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
-                        <TableCell>{result.vocabulary}</TableCell>
-                        <TableCell>{result.description}</TableCell>
-                        <TableCell>{result.score}</TableCell>
-                        <TableCell>{result.category}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-              <TableFooter>
-                <TablePagination
-                  count={results.length}
-                  onPageChange={changePage}
-                  page={currentPage}
-                  rowsPerPage={rowsPerPage}
-                  component="div"
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                ></TablePagination>
-              </TableFooter>
-            </div>
-            <div className={styles.infoContainer} onMouseOver={showInfoText} onMouseOut={hideInfoText}>
-              <FontAwesomeIcon icon={["fal", "circle-info"]} />
-            </div>
-          </div>
+          <Table aria-label="table of the results">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Tooltip
+                    title={<span className={styles.infoText}>IRIs are used to uniquely describe information.</span>}
+                  >
+                    <span>IRI</span>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>
+                  <Tooltip
+                    title={
+                      <span className={styles.infoText}>
+                        Vocabularies define information terms that can be used to describe information in a standardized
+                        format.
+                      </span>
+                    }
+                  >
+                    <span>Vocabulary</span>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>
+                  <Tooltip title={<span className={styles.infoText}>A description of the IRI.</span>}>
+                    <span>Description</span>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>
+                  <Tooltip
+                    title={
+                      <span className={styles.infoText}>
+                        The score defines how well the IRI matches the search term.
+                      </span>
+                    }
+                  >
+                    <span>Score</span>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>
+                  <Tooltip
+                    title={
+                      <span className={styles.infoText}>
+                        Classes describe the type of an instance. They can be in the subject or object position of a
+                        triple. Properties describe the relationship between two instances. They are in the predicate
+                        position. (subject, predicate, object)
+                      </span>
+                    }
+                  >
+                    <span>Category</span>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {results
+                .slice(currentPage * rowsPerPage, currentPage * rowsPerPage + rowsPerPage)
+                .map((result, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
+                      <TableCell>{result.vocabulary}</TableCell>
+                      <TableCell>{result.description}</TableCell>
+                      <TableCell>{result.score}</TableCell>
+                      <TableCell>{result.category}</TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+          <TableFooter>
+            <TablePagination
+              count={results.length}
+              onPageChange={changePage}
+              page={currentPage}
+              rowsPerPage={rowsPerPage}
+              component="div"
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            ></TablePagination>
+          </TableFooter>
         </div>
       )}
     </Container>
