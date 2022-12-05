@@ -15,7 +15,6 @@ import {
   TablePagination,
   TableFooter,
   Tooltip,
-  Paper,
 } from "@material-ui/core";
 import clariahImg from "./clariahLogo2.png";
 import clariahIcon from "./clariahIcon.png";
@@ -129,12 +128,15 @@ const LandingPage: React.FC<Props> = () => {
   }
 
   const search = (event: React.FormEvent<HTMLFormElement>) => {
+    //?
     setSearchError(undefined);
+    //?
     event.preventDefault();
+
     const input: Arguments = {
       searchTerms: terms,
       categories: cat,
-      endpoints: [],
+      endpoints: [], // could add default endpoints here maybe array of opts?
       defaultEndpoint: {
         name: "iisg",
         type: "sparql",
@@ -148,6 +150,7 @@ const LandingPage: React.FC<Props> = () => {
       .then((value) => {
         const resultList = value?.resultObj
           ? value.resultObj
+              // list of results added with the caterogy of that class
               .map((resultObj) => resultObj.results.map((result) => ({ ...result, category: resultObj.category })))
               .flat()
           : [];
@@ -159,7 +162,7 @@ const LandingPage: React.FC<Props> = () => {
         console.error(error);
       });
   };
-
+  // Returns the website
   return (
     <Container>
       <div>
@@ -168,6 +171,7 @@ const LandingPage: React.FC<Props> = () => {
       <form className={styles.searchInput} onSubmit={search}>
         <div className={styles.searchTerm}>
           <h1>Vocabulary Recommender</h1>
+          {/* searchBar */}
           <TextField
             variant="outlined"
             placeholder="Enter search term"
@@ -181,10 +185,8 @@ const LandingPage: React.FC<Props> = () => {
               startAdornment: (
                 <InputAdornment position="start">
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
                     value={category}
-                    label="Age"
+                    label="Category type of results"
                     onChange={(event) => {
                       setCategory(event.target.value as string);
                     }}
@@ -208,6 +210,7 @@ const LandingPage: React.FC<Props> = () => {
           ></TextField>
         </div>
       </form>
+      {/* if search is successful: return the results */}
       {results && (
         <div className={styles.resultsContainer}>
           <hr></hr>
@@ -272,6 +275,7 @@ const LandingPage: React.FC<Props> = () => {
                 .map((result, index) => {
                   return (
                     <TableRow key={index}>
+                      {/* prefix inserted here with  */}
                       <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
                       <TableCell>{result.vocabulary}</TableCell>
                       <TableCell>{result.description}</TableCell>

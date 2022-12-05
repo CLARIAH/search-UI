@@ -5,6 +5,7 @@ interface Props {}
 const App: React.FC<Props> = () => {
   return (
     <>
+      {/* Insert all pages here to be dymamically loaded */}
       <LandingPage />
     </>
   );
