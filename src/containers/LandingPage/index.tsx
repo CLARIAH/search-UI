@@ -270,7 +270,6 @@ const LandingPage: React.FC<Props> = () => {
                 .map((result, index) => {
                   return (
                     <TableRow key={index}>
-                      {/* prefix inserted here with  */}
                       <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
                       <TableCell>{result.vocabulary}</TableCell>
                       <TableCell>{result.description}</TableCell>
