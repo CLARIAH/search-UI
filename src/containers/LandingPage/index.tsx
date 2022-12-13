@@ -51,8 +51,7 @@ const LandingPage: React.FC<Props> = () => {
       select ?iri (sample(?label) as ?label) (sample(?description) as ?description) (sum(?_score) as ?score) {
         {
           { ?iri a owl:Class. } union { ?iri a rdfs:Class. }
-          filter(regex(str(?iri),'${searchTerm}','i'))
-          bind(1 as ?_score)
+          bind(if(regex(str(?iri),'${searchTerm}','i'),1,0) as ?_score)
         } union {
           { ?iri a owl:Class. } union { ?iri a rdfs:Class. }
           ?iri dct:description|
@@ -63,22 +62,20 @@ const LandingPage: React.FC<Props> = () => {
                skos:example|
                skos:historyNote|
                skos:scopeNote ?description.
-          filter(regex(str(?description),'${searchTerm}','i'))
-          # Changed score from 1 to 0.8
-          bind(0.8 as ?_score)
+          bind(if(regex(str(?description),'${searchTerm}','i'),0.8,0) as ?_score)
         } union {
           { ?iri a owl:Class. } union { ?iri a rdfs:Class. }
           ?iri rdfs:label|
                skos:altLabel|
                skos:prefLabel|
                skos:hiddenLabel ?label.
-          filter(regex(str(?label),'${searchTerm}','i'))
-          bind(1 as ?_score)
+          bind(if(regex(str(?label),'${searchTerm}','i'),1,0) as ?_score)
         }
       }
       group by ?iri
       order by desc(?score)
     }
+    filter(?score > 0)
   }
   `;
   const queryProp: string = `prefix dct: <http://purl.org/dc/terms/>
@@ -90,8 +87,7 @@ const LandingPage: React.FC<Props> = () => {
       select ?iri (sample(?label) as ?label) (sample(?description) as ?description) (sum(?_score) as ?score) {
         {
           { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. } 
-          filter(regex(str(?iri),'${searchTerm}','i'))
-          bind(1 as ?_score)
+          bind(if(regex(str(?iri),'${searchTerm}','i'),1,0) as ?_score)
         } union {
           { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. }  
           ?iri dct:description|
@@ -102,21 +98,20 @@ const LandingPage: React.FC<Props> = () => {
                skos:example|
                skos:historyNote|
                skos:scopeNote ?description.
-          filter(regex(str(?description),'${searchTerm}','i'))
-          bind(0.8 as ?_score)
+          bind(if(regex(str(?description),'${searchTerm}','i'),0.8,0) as ?_score)
         } union {
           { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. }  
           ?iri rdfs:label|
                skos:altLabel|
                skos:prefLabel|
                skos:hiddenLabel ?label.
-          filter(regex(str(?label),'${searchTerm}','i'))
-          bind(1 as ?_score)
+               bind(if(regex(str(?label),'${searchTerm}','i'),1,0) as ?_score)
         }
       }
       group by ?iri
       order by desc(?score)
     }
+    filter(?score > 0)
   }
   `;
 
