@@ -26,6 +26,9 @@ interface Props {}
 const LandingPage: React.FC<Props> = () => {
   const [category, setCategory] = React.useState<string>("all");
   const [searchTerm, setSearchTerm] = React.useState<string>("");
+  const [endpoint, setEndpoint] = React.useState<string>(
+    "https://api.triplydb.com/datasets/okfn/lov/services/lov/sparql"
+  );
   const [results, setResult] = React.useState<(Result & { category: string })[]>();
   const [searchError, setSearchError] = React.useState<string>();
   const [currentPage, setCurrentPage] = React.useState<number>(0);
@@ -122,7 +125,7 @@ const LandingPage: React.FC<Props> = () => {
     terms = [searchTerm, searchTerm];
   }
 
-  const search = (event: React.FormEvent<HTMLFormElement>) => {
+  const search = (event: any) => {
     //?
     setSearchError(undefined);
     //?
@@ -133,9 +136,8 @@ const LandingPage: React.FC<Props> = () => {
       categories: cat,
       endpoints: [], // could add default endpoints here maybe array of opts?
       defaultEndpoint: {
-        name: "iisg",
         type: "sparql",
-        url: "https://api.druid.datalegend.net/datasets/IISG/iisg-kg/services/iisg-kg/sparql",
+        url: endpoint,
         queryClass: queryClass,
         queryProperty: queryProp,
       },
@@ -157,6 +159,7 @@ const LandingPage: React.FC<Props> = () => {
         console.error(error);
       });
   };
+
   // Returns the website
   return (
     <Container>
@@ -186,10 +189,26 @@ const LandingPage: React.FC<Props> = () => {
                       setCategory(event.target.value as string);
                     }}
                     className={styles.selectInput}
+                    title="Select the category"
+                    aria-label="category selection"
                   >
                     <MenuItem value={"all"}>all</MenuItem>
                     <MenuItem value={"class"}>class</MenuItem>
                     <MenuItem value={"property"}>property</MenuItem>
+                  </Select>
+                  <Select
+                    value={endpoint}
+                    label="Endpoint selection"
+                    onChange={(event) => {
+                      setEndpoint(event.target.value as string);
+                    }}
+                    title="Select the endpoint"
+                    aria-label="endpoint selection"
+                  >
+                    <MenuItem value={"https://api.triplydb.com/datasets/okfn/lov/services/lov/sparql"}>lov</MenuItem>
+                    <MenuItem value={"https://api.druid.datalegend.net/datasets/IISG/iisg-kg/services/iisg-kg/sparql"}>
+                      iisg
+                    </MenuItem>
                   </Select>
                 </InputAdornment>
               ),
