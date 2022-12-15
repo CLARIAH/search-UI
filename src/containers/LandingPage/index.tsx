@@ -18,8 +18,9 @@ import {
 } from "@material-ui/core";
 import clariahImg from "./clariahLogo2.png";
 import clariahIcon from "./clariahIcon.png";
-import { recommend } from "vocabulary-recommender/dist/recommend";
-import { Arguments, Result } from "vocabulary-recommender/dist/interfaces";
+import { Endpoint, Input, Result } from "vocabulary-recommender/dist/interfaces";
+import { homogeneousRecommendation } from "vocabulary-recommender/dist/homogeneous";
+import { singleRecommendation } from "vocabulary-recommender/dist/singleRecommend";
 
 interface Props {}
 
@@ -29,10 +30,11 @@ const LandingPage: React.FC<Props> = () => {
   const [endpoint, setEndpoint] = React.useState<string>(
     "https://api.triplydb.com/datasets/okfn/lov/services/lov/sparql"
   );
-  const [results, setResult] = React.useState<(Result & { category: string })[]>();
+  const [results, setResult] = React.useState<Result[]>();
   const [searchError, setSearchError] = React.useState<string>();
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [loading, setLoading] = React.useState(false);
 
   const changePage = (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
     // Go to the next results page
@@ -43,6 +45,10 @@ const LandingPage: React.FC<Props> = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setCurrentPage(0);
   };
+
+  // const handleCatChange = (event: React.ChangeEvent<{}>) => {
+  //   setCategory(event.target.value as string);
+  // }
 
   const queryClass: string = `# Contains a configured SPARQL query to search classes. 
   prefix dct: <http://purl.org/dc/terms/>
@@ -90,7 +96,7 @@ const LandingPage: React.FC<Props> = () => {
       select ?iri (sample(?label) as ?label) (sample(?description) as ?description) (sum(?_score) as ?score) {
         {
           { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. } 
-          bind(if(regex(str(?iri),'${searchTerm}','i'),1,0) as ?_score)
+          bind(if(regex(str(?iri),'${searchTerm}','i'),10,0) as ?_score)
         } union {
           { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. }  
           ?iri dct:description|
@@ -101,14 +107,14 @@ const LandingPage: React.FC<Props> = () => {
                skos:example|
                skos:historyNote|
                skos:scopeNote ?description.
-          bind(if(regex(str(?description),'${searchTerm}','i'),0.8,0) as ?_score)
+          bind(if(regex(str(?description),'${searchTerm}','i'),8,0) as ?_score)
         } union {
           { ?iri a owl:DatatypeProperty. } union { ?iri a owl:ObjectProperty. }  
           ?iri rdfs:label|
                skos:altLabel|
                skos:prefLabel|
                skos:hiddenLabel ?label.
-               bind(if(regex(str(?label),'${searchTerm}','i'),1,0) as ?_score)
+               bind(if(regex(str(?label),'${searchTerm}','i'),10,0) as ?_score)
         }
       }
       group by ?iri
@@ -118,40 +124,69 @@ const LandingPage: React.FC<Props> = () => {
   }
   `;
 
-  let cat: string[] = [category];
-  let terms: string[] = [searchTerm];
-  if (category === "all") {
-    cat = ["class", "property"];
-    terms = [searchTerm, searchTerm];
-  }
+  let inputList: Input[] = [{ searchTerm: searchTerm, category: category }];
 
-  const search = (event: any) => {
+  const defaultEndpoint: Endpoint = {
+    type: "sparql",
+    url: endpoint,
+    queryClass: queryClass,
+    queryProperty: queryProp,
+  };
+
+  const search = (event: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     //?
     setSearchError(undefined);
     //?
     event.preventDefault();
 
-    const input: Arguments = {
-      searchTerms: terms,
-      categories: cat,
-      endpoints: [], // could add default endpoints here maybe array of opts?
-      defaultEndpoint: {
-        type: "sparql",
-        url: endpoint,
-        queryClass: queryClass,
-        queryProperty: queryProp,
-      },
-    };
-
-    recommend(input)
+    homogeneousRecommendation(inputList, defaultEndpoint, {})
       .then((value) => {
-        const resultList = value?.resultObj
-          ? value.resultObj
-              // list of results added with the caterogy of that class
-              .map((resultObj) => resultObj.results.map((result) => ({ ...result, category: resultObj.category })))
-              .flat()
-          : [];
-        setResult(resultList.sort((first, second) => (second.score || -1) - (first.score || -1)));
+        const resultList = value[0][0].single;
+        //setResult(resultList.filter((result: Result) => result.vocabPrefix != "no results"));
+        resultList.filter((result: Result) => result.vocabPrefix != "no results");
+        resultList.map((result: Result) => {
+          if (result.score < 0.01) {
+            return (result.label = "weak");
+          } else if (result.score < 0.1) {
+            return (result.label = "moderate");
+          } else {
+            return (result.label = "strong");
+          }
+        });
+        setResult(resultList);
+        setLoading(false);
+        setCurrentPage(0);
+      })
+      .catch((error) => {
+        setSearchError(error.message);
+        console.error(error);
+      });
+  };
+
+  const searchCat = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
+    setLoading(true);
+    //?
+    setSearchError(undefined);
+    //?
+    event.preventDefault();
+
+    homogeneousRecommendation(inputList, defaultEndpoint, {})
+      .then((value) => {
+        const resultList = value[0][0].single;
+        //setResult(resultList.filter((result: Result) => result.vocabPrefix != "no results"));
+        resultList.filter((result: Result) => result.vocabPrefix != "no results");
+        resultList.map((result: Result) => {
+          if (result.score < 0.01) {
+            return (result.label = "weak");
+          } else if (result.score < 0.1) {
+            return (result.label = "moderate");
+          } else {
+            return (result.label = "strong");
+          }
+        });
+        setResult(resultList);
+        setLoading(false);
         setCurrentPage(0);
       })
       .catch((error) => {
@@ -187,6 +222,7 @@ const LandingPage: React.FC<Props> = () => {
                     label="Category type of results"
                     onChange={(event) => {
                       setCategory(event.target.value as string);
+                      search(event);
                     }}
                     className={styles.selectInput}
                     title="Select the category"
@@ -200,7 +236,10 @@ const LandingPage: React.FC<Props> = () => {
                     value={endpoint}
                     label="Endpoint selection"
                     onChange={(event) => {
+                      console.log(endpoint);
                       setEndpoint(event.target.value as string);
+                      console.log(endpoint);
+                      //searchAuto(event)
                     }}
                     title="Select the endpoint"
                     aria-label="endpoint selection"
@@ -222,6 +261,7 @@ const LandingPage: React.FC<Props> = () => {
             }}
             fullWidth
           ></TextField>
+          {loading && <span>Loading...</span>}
         </div>
       </form>
       {/* if search is successful: return the results */}
@@ -289,10 +329,15 @@ const LandingPage: React.FC<Props> = () => {
                 .map((result, index) => {
                   return (
                     <TableRow key={index}>
-                      <TableCell>{<a href={result.iri}>{result.iri}</a>}</TableCell>
-                      <TableCell>{result.vocabulary}</TableCell>
+                      <TableCell>
+                        {<a href={result.iri}>{result.iri.replace(result.vocabDomain, result.vocabPrefix + ":")}</a>}
+                      </TableCell>
+                      <TableCell>{<a href={result.vocabDomain}>{result.vocabPrefix}</a>}</TableCell>
                       <TableCell>{result.description}</TableCell>
-                      <TableCell>{result.score}</TableCell>
+                      {/* <TableCell>{result.score.toFixed(2)}</TableCell> */}
+                      <TableCell>
+                        {result.label} ({result.score.toFixed(2)})
+                      </TableCell>
                       <TableCell>{result.category}</TableCell>
                     </TableRow>
                   );

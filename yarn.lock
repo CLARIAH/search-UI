@@ -1853,7 +1853,7 @@ __metadata:
     ts-loader: ^9.4.1
     typescript: ^4.8.4
     url-loader: ^4.1.1
-    vocabulary-recommender: ^1.0.7
+    vocabulary-recommender: ^2.0.0
     webpack: 5.75.0
     webpack-build-notifier: ^2.3.0
     webpack-bundle-analyzer: ^4.7.0
@@ -9869,6 +9869,23 @@ __metadata:
     recommend: dist/cli.js
     vocabulary-recommend: dist/cli.js
   checksum: 4d4a824c8747a4b1e7c52fc03d62c621670bf48110173eba6ce515ce37d49a6955ec252fd424f9579249c53a5d7bbe6ddee704ab30e1622f7a213ba8d3a7ab5e
+  languageName: node
+  linkType: hard
+
+"vocabulary-recommender@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "vocabulary-recommender@npm:2.0.0"
+  dependencies:
+    cross-fetch: ^3.1.5
+    execall: ^3.0.0
+    lodash: ^4.17.21
+    node-fetch: 2
+    vocabulary-recommender: ^1.0.7
+    yargs: ^17.5.1
+  bin:
+    recommend: dist/cli.js
+    vocabulary-recommend: dist/cli.js
+  checksum: 9f56cc2b71dcd8860d0a14123eaa66b982b76b9e2a8f5edf29af2fe5ee7e55dfea94480bb64dceeddd375fb3e471ca919c8e548fc602f3f44b52b42a40ccfa77
   languageName: node
   linkType: hard
 
