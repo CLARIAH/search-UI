@@ -46,10 +46,6 @@ const LandingPage: React.FC<Props> = () => {
     setCurrentPage(0);
   };
 
-  // const handleCatChange = (event: React.ChangeEvent<{}>) => {
-  //   setCategory(event.target.value as string);
-  // }
-
   const queryClass: string = `# Contains a configured SPARQL query to search classes. 
   prefix dct: <http://purl.org/dc/terms/>
   prefix owl: <http://www.w3.org/2002/07/owl#>
@@ -143,49 +139,19 @@ const LandingPage: React.FC<Props> = () => {
     homogeneousRecommendation(inputList, defaultEndpoint, {})
       .then((value) => {
         const resultList = value[0][0].single;
-        //setResult(resultList.filter((result: Result) => result.vocabPrefix != "no results"));
-        resultList.filter((result: Result) => result.vocabPrefix != "no results");
-        resultList.map((result: Result) => {
-          if (result.score < 0.01) {
-            return (result.label = "weak");
-          } else if (result.score < 0.1) {
-            return (result.label = "moderate");
-          } else {
-            return (result.label = "strong");
-          }
-        });
-        setResult(resultList);
-        setLoading(false);
-        setCurrentPage(0);
-      })
-      .catch((error) => {
-        setSearchError(error.message);
-        console.error(error);
-      });
-  };
-
-  const searchCat = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
-    setLoading(true);
-    //?
-    setSearchError(undefined);
-    //?
-    event.preventDefault();
-
-    homogeneousRecommendation(inputList, defaultEndpoint, {})
-      .then((value) => {
-        const resultList = value[0][0].single;
-        //setResult(resultList.filter((result: Result) => result.vocabPrefix != "no results"));
-        resultList.filter((result: Result) => result.vocabPrefix != "no results");
-        resultList.map((result: Result) => {
-          if (result.score < 0.01) {
-            return (result.label = "weak");
-          } else if (result.score < 0.1) {
-            return (result.label = "moderate");
-          } else {
-            return (result.label = "strong");
-          }
-        });
-        setResult(resultList);
+        setResult(resultList.filter((result: Result) => result.vocabPrefix != "no results"));
+        // Use this part instead of the first setResult part for the textual explanations of the scores.
+        // resultList.filter((result: Result) => result.vocabPrefix != "no results");
+        // resultList.map((result: Result) => {
+        //   if (result.score < 0.01) {
+        //     return (result.label = "weak");
+        //   } else if (result.score < 0.1) {
+        //     return (result.label = "moderate");
+        //   } else {
+        //     return (result.label = "strong");
+        //   }
+        // });
+        // setResult(resultList);
         setLoading(false);
         setCurrentPage(0);
       })
@@ -222,7 +188,6 @@ const LandingPage: React.FC<Props> = () => {
                     label="Category type of results"
                     onChange={(event) => {
                       setCategory(event.target.value as string);
-                      search(event);
                     }}
                     className={styles.selectInput}
                     title="Select the category"
@@ -236,10 +201,7 @@ const LandingPage: React.FC<Props> = () => {
                     value={endpoint}
                     label="Endpoint selection"
                     onChange={(event) => {
-                      console.log(endpoint);
                       setEndpoint(event.target.value as string);
-                      console.log(endpoint);
-                      //searchAuto(event)
                     }}
                     title="Select the endpoint"
                     aria-label="endpoint selection"
@@ -334,10 +296,11 @@ const LandingPage: React.FC<Props> = () => {
                       </TableCell>
                       <TableCell>{<a href={result.vocabDomain}>{result.vocabPrefix}</a>}</TableCell>
                       <TableCell>{result.description}</TableCell>
-                      {/* <TableCell>{result.score.toFixed(2)}</TableCell> */}
-                      <TableCell>
+                      <TableCell>{result.score.toFixed(2)}</TableCell>
+                      {/* To be used for the textual explanations of the score.
+                       <TableCell>
                         {result.label} ({result.score.toFixed(2)})
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell>{result.category}</TableCell>
                     </TableRow>
                   );
