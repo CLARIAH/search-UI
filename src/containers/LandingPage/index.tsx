@@ -20,7 +20,6 @@ import clariahImg from "./clariahLogo2.png";
 import clariahIcon from "./clariahIcon.png";
 import { Endpoint, Input, Result } from "vocabulary-recommender/dist/interfaces";
 import { homogeneousRecommendation } from "vocabulary-recommender/dist/homogeneous";
-import { singleRecommendation } from "vocabulary-recommender/dist/singleRecommend";
 
 interface Props {}
 

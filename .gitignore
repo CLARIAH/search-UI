@@ -4,6 +4,7 @@ lib
 lerna-debug.log
 yarn-error.log
 /test
+.idea
 
 # Based on https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 .pnp.*

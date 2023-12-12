@@ -41,7 +41,7 @@ plugins.push(
   })
 );
 
-if (analyzeBundle) plugins.push(new BundleAnalyzerPlugin());
+if (analyzeBundle) plugins.push(new BundleAnalyzerPlugin() as any);
 
 export const genericConfig: webpack.Configuration = {
   //We cannot use all source map implementations because of the terser plugin
